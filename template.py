@@ -4,7 +4,7 @@ import logging
 
 logging.basicConfig(level = logging.INFO, format = '[%(asctime)s] : %(message)s')
 
-project_name = 'hate-speech-classification'
+project_name = 'hateSpeechClassification'
 
 list_of_files = [
     f"{project_name}/components/__init__.py",
