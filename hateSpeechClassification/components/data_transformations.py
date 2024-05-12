@@ -35,7 +35,7 @@ class DataTransformation:
         try:
             logging.info('Inside clean_raw_data method from DataTransformation class')
             raw_data = pd.read_csv(self.data_ingestion_artifacts.raw_data_path)
-            print(f'{raw_data.columns}')
+
             raw_data.drop(self.data_transformation_config.COLUMNS_TO_BE_DROPPED,axis = self.data_transformation_config.AXIS, inplace = self.data_transformation_config.INPLACE)
 
             raw_data[raw_data[self.data_transformation_config.CLASS]==0][self.data_transformation_config.CLASS]=1

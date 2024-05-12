@@ -8,6 +8,12 @@ class DataIngestionArtifacts:
 
 
 @dataclass
+class DataValidationArtifacts:
+    imbalance_dataset_columns: set
+    raw_dataset_columns: set
+
+
+@dataclass
 class DataTransformationArtifacts:
     transformed_data_path: str
 

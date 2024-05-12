@@ -8,10 +8,17 @@ class DataIngestionConfig:
         self.BUCKET_NAME = BUCKET_NAME
         self.ZIP_FILE_NAME = ZIP_FILE_NAME
         self.DATA_INGESTION_ARTIFACTS_DIR: str = os.path.join(os.getcwd(),ARTIFACTS_DIR, DATA_INGESTION_ARTIFACTS_DIR)
-        self.IMBALANCED_DATA_ARTIFACTS: str = os.path.join(self.DATA_INGESTION_ARTIFACTS_DIR, DATA_INGESTION_IMBALANCE_DATA_DIR)
-        self.RAW_DATA_ARTIFACTS: str = os.path.join(self.DATA_INGESTION_ARTIFACTS_DIR, DATA_INGESTION_RAW_DATA_DIR)
+        self.IMBALANCED_DATA_ARTIFACTS: str = os.path.join(self.DATA_INGESTION_ARTIFACTS_DIR, DATA_INGESTION_IMBALANCE_DATA_FILE)
+        self.RAW_DATA_ARTIFACTS: str = os.path.join(self.DATA_INGESTION_ARTIFACTS_DIR, DATA_INGESTION_RAW_DATA_FILE)
         self.ZIP_FILE_DIR: str = os.path.join(self.DATA_INGESTION_ARTIFACTS_DIR)
         self.ZIP_FILE_DIR_NAME: str = os.path.join(self.DATA_INGESTION_ARTIFACTS_DIR, self.ZIP_FILE_NAME)
+
+
+@dataclass
+class DataValidationConfig:
+    def __init__(self):
+        self.IMBALANCED_COLUMNS_SET = {IMB_ID, IMB_LABEL, IMB_TWEET}
+        self.RAWDATA_COLUMNS_SET = {RAW_UNNAMED, RAW_COUNT, RAW_HATESPEECH, RAW_OFFENSIVE_LNG, RAW_NEITHER, RAW_CLASS, RAW_TWEET}
 
 
 
@@ -19,7 +26,7 @@ class DataIngestionConfig:
 class DataTransformationConfig:
     def __init__(self):
         self.DATA_TRANSFORMATION_ARTIFACTS_DIR = os.path.join(os.getcwd(), ARTIFACTS_DIR, DATA_TRANSFORMATION_ARTIFACTS_DIR)
-        self.TRANSFORMED_FILE_PATH = os.path.join(self.DATA_TRANSFORMATION_ARTIFACTS_DIR, TRANSFORMED_FILE_NAME)
+        self.TRANSFORMED_FILE_PATH = os.path.join(self.DATA_TRANSFORMATION_ARTIFACTS_DIR, TRANSFORMED_DATA_FILE)
         self.ID = ID
         self.AXIS = AXIS
         self.INPLACE = INPLACE 

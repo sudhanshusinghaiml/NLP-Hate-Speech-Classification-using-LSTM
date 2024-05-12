@@ -2,6 +2,14 @@
 NLP End to End Projects to classify the hate speech using LSTM and RNN
 
 
+## Project Workflow
+- constants
+- config_entity
+- artifact_entity
+- components
+- pipelines
+- app.py
+
 ## How to run?
 
 ```bash
