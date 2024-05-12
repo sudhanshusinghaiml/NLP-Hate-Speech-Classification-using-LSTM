@@ -52,7 +52,7 @@ class DataIngestion:
             
             data_ingestion_artifacts = DataIngestionArtifacts(
                 imbalance_data_path = imbalanced_data_path,
-                raw_data_path = imbalanced_data_path
+                raw_data_path = raw_data_path
             )
 
             logging.info(f"Data ingestion artifact: {data_ingestion_artifacts}")
