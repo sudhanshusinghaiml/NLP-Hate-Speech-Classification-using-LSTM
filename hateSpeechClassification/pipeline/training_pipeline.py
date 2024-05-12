@@ -4,9 +4,10 @@ from hateSpeechClassification.exception import CustomException
 from hateSpeechClassification.components.data_ingestion import DataIngestion
 from hateSpeechClassification.components.data_transformations import DataTransformation
 from hateSpeechClassification.components.data_validator import DataValidation
+from hateSpeechClassification.components.model_trainer import ModelTraining
 
-from hateSpeechClassification.entity.config_entity import DataIngestionConfig, DataTransformationConfig, DataValidationConfig
-from hateSpeechClassification.entity.artifact_entity import DataIngestionArtifacts, DataTransformationArtifacts, DataValidationArtifacts
+from hateSpeechClassification.entity.config_entity import DataIngestionConfig, DataTransformationConfig, DataValidationConfig, ModelTrainingConfig
+from hateSpeechClassification.entity.artifact_entity import DataIngestionArtifacts, DataTransformationArtifacts, DataValidationArtifacts, ModelTrainingArtifacts
 
 
 class TrainingPipeline:
@@ -65,6 +66,22 @@ class TrainingPipeline:
 
         except Exception as e:
             raise CustomException(e, sys) from e
+        
+
+    def start_model_trainer(self, data_transformation_artifacts: DataTransformationArtifacts) -> ModelTrainingArtifacts:
+        logging.info(
+            "Entered the start_model_trainer method of TrainPipeline class"
+        )
+        try:
+            model_trainer = ModelTraining(data_transformation_artifacts=data_transformation_artifacts,
+                                        model_trainer_config=self.model_trainer_config
+                                        )
+            model_training_artifacts = model_trainer.initiate_model_training()
+            logging.info("Exited the start_model_trainer method of TrainPipeline class")
+            return model_training_artifacts
+
+        except Exception as e:
+            raise CustomException(e, sys) 
 
 
     def run_pipeline(self):
@@ -78,6 +95,10 @@ class TrainingPipeline:
 
             data_transformation_artifacts = self.start_data_transformation(
                 data_ingestion_artifacts = data_ingestion_artifacts
+            )
+
+            model_trainer_artifacts = self.start_model_trainer(
+                data_transformation_artifacts=data_transformation_artifacts
             )
 
             logging.info('Successfully completed run_pipeline method of TrainingPipeline class')

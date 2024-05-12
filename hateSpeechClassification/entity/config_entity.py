@@ -36,3 +36,22 @@ class DataTransformationConfig:
         self.TWEET = TWEET
 
 
+@dataclass
+class ModelTrainingConfig:
+    def __init__(self):
+        self.TRAINED_MODEL_DIR: str = os.path.join(os.getcwd(), ARTIFACTS_DIR, MODEL_TRAINER_ARTIFACTS_DIR)
+        self.TRAINED_MODEL_PATH: str = os.path.join(self.TRAINED_MODEL_DIR, TRAINED_MODEL_NAME)
+        self.X_TEST_DATA_PATH: str = os.path.join(self.TRAINED_MODEL_DIR, X_TEST_FILE_NAME)
+        self.Y_TEST_DATA_PATH: str = os.path.join(self.TRAINED_MODEL_DIR, Y_TEST_FILE_NAME)
+        self.X_TRAIN_DATA_PATH: str = os.path.join(self.TRAINED_MODEL_DIR, X_TRAIN_FILE_NAME)
+        self.RANDOM_STATE = RANDOM_STATE
+        self.EPOCH = EPOCH
+        self.BATCH_SIZE = BATCH_SIZE
+        self.VALIDATION_SPLIT = VALIDATION_SPLIT
+        self.MAXIMUM_WORDS = MAXIMUM_WORDS
+        self.MAXIMUM_LENGTH = MAXIMUM_LENGTH
+        self.LOSS = LOSS
+        self.METRICS = METRICS
+        self.ACTIVATION = ACTIVATION
+        self.LABEL = LABEL
+        self.TWEET = TWEET

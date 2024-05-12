@@ -46,5 +46,33 @@ LABEL = 'label'
 TWEET = 'tweet'
 
 
-# Model Trainer Constants
+# Model Training Constants
+MODEL_TRAINER_ARTIFACTS_DIR = 'ModelTrainerArtifacts'
+TRAINED_MODEL_DIR = 'TrainedModel'
+TRAINED_MODEL_NAME = 'lstm_model.h5'
+X_TEST_FILE_NAME = 'x_test.csv'
+Y_TEST_FILE_NAME = 'y_test.csv'
 
+X_TRAIN_FILE_NAME = 'x_train.csv'
+
+RANDOM_STATE = 42
+EPOCH = 1
+BATCH_SIZE = 128
+VALIDATION_SPLIT = 0.2
+
+
+# Model Architecture Constants
+MAXIMUM_WORDS = 50000
+MAXIMUM_LENGTH = 300
+LOSS = 'binary_crossentropy'
+METRICS = ['accuracy']
+ACTIVATION = 'sigmoid'
+
+
+# Model Evaluation Constants
+MODEL_EVALUATION_ARTIFACTS_DIR = 'ModelEvaluationArtifacts'
+BEST_MODEL_DIR = "BestModel"
+MODEL_EVALUATION_FILE_NAME = "loss.csv"
+MODEL_NAME = 'model.h5'
+APP_HOST = "0.0.0.0"
+APP_PORT = 8080
