@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 models/tokenizer.pickle
 models/model.h5
+artifacts/*
