@@ -53,10 +53,9 @@ class DataTransformation:
 
             # Let's change the name of the 'class' to label
             raw_data.rename(columns={self.data_transformation_config.CLASS:self.data_transformation_config.LABEL},inplace =self.data_transformation_config.INPLACE)
-            logging.info(f"Exited the raw_data_cleaning function and returned the raw_data {raw_data}")
 
             logging.info("Successfully executed clean_raw_data method from DataTransformation class")
-            # logging.info(f"Returning raw data {raw_data}")
+
             return raw_data
         
         except Exception as e:

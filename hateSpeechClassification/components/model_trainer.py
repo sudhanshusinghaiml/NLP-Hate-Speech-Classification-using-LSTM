@@ -14,9 +14,9 @@ from hateSpeechClassification.entity.artifact_entity import ModelTrainingArtifac
 from hateSpeechClassification.ml.model import ModelArchitecture
 
 class ModelTraining:
-    def __init__(self, data_transformation_artifacts: DataTransformationArtifacts, model_trainer_config: ModelTrainingConfig):
+    def __init__(self, data_transformation_artifacts: DataTransformationArtifacts, model_training_config: ModelTrainingConfig):
         self.data_transformation_artifacts = data_transformation_artifacts
-        self.model_trainer_config = model_trainer_config
+        self.model_training_config = model_training_config
 
     def data_splitting(self, csv_path):
         try:
@@ -46,14 +46,14 @@ class ModelTraining:
         try:
             logging.info("Applying tokenization on the data")
             
-            tokenizer = Tokenizer(num_words = self.model_trainer_config.MAXIMUM_WORDS)
+            tokenizer = Tokenizer(num_words = self.model_training_config.MAXIMUM_WORDS)
             
             tokenizer.fit_on_texts(x_train)
             
             sequences = tokenizer.texts_to_sequences(x_train)
             
             # logging.info(f"converting text to sequences: {sequences}")
-            sequences_matrix = pad_sequences(sequences, maxlen=self.model_trainer_config.MAXIMUM_LENGTH)
+            sequences_matrix = pad_sequences(sequences, maxlen=self.model_training_config.MAXIMUM_LENGTH)
             
             # logging.info(f" The sequence matrix is: {sequences_matrix}")
             return sequences_matrix, tokenizer
@@ -89,28 +89,28 @@ class ModelTraining:
             logging.info("Model Training started")
 
             model.fit(sequences_matrix, y_train, 
-                        batch_size=self.model_trainer_config.BATCH_SIZE, 
-                        epochs = self.model_trainer_config.EPOCH, 
-                        validation_split=self.model_trainer_config.VALIDATION_SPLIT, 
+                        batch_size=self.model_training_config.BATCH_SIZE, 
+                        epochs = self.model_training_config.EPOCH, 
+                        validation_split=self.model_training_config.VALIDATION_SPLIT, 
                         )
             
             logging.info("Model training finished")
 
             with open('tokenizer.pickle', 'wb') as handle:
                 pickle.dump(tokenizer, handle, protocol = pickle.HIGHEST_PROTOCOL)
-            os.makedirs(self.model_trainer_config.TRAINED_MODEL_DIR, exist_ok=True)
+            os.makedirs(self.model_training_config.TRAINED_MODEL_DIR, exist_ok=True)
             logging.info("Completed - Tokenizer saved")
 
             logging.info("Completed - Model saved")
-            model.save(self.model_trainer_config.TRAINED_MODEL_PATH)
-            x_test.to_csv(self.model_trainer_config.X_TEST_DATA_PATH)
-            y_test.to_csv(self.model_trainer_config.Y_TEST_DATA_PATH)
-            x_train.to_csv(self.model_trainer_config.X_TRAIN_DATA_PATH)
+            model.save(self.model_training_config.TRAINED_MODEL_PATH)
+            x_test.to_csv(self.model_training_config.X_TEST_DATA_PATH)
+            y_test.to_csv(self.model_training_config.Y_TEST_DATA_PATH)
+            x_train.to_csv(self.model_training_config.X_TRAIN_DATA_PATH)
 
             model_trainer_artifacts = ModelTrainingArtifacts(
-                trained_model_path = self.model_trainer_config.TRAINED_MODEL_PATH,
-                x_test_path = self.model_trainer_config.X_TEST_DATA_PATH,
-                y_test_path = self.model_trainer_config.Y_TEST_DATA_PATH)
+                trained_model_path = self.model_training_config.TRAINED_MODEL_PATH,
+                x_test_path = self.model_training_config.X_TEST_DATA_PATH,
+                y_test_path = self.model_training_config.Y_TEST_DATA_PATH)
             logging.info("Returning the ModelTrainingArtifacts")
             return model_trainer_artifacts
 

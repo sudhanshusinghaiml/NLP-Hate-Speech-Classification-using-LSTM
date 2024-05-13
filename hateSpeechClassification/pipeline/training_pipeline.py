@@ -5,9 +5,10 @@ from hateSpeechClassification.components.data_ingestion import DataIngestion
 from hateSpeechClassification.components.data_transformations import DataTransformation
 from hateSpeechClassification.components.data_validator import DataValidation
 from hateSpeechClassification.components.model_trainer import ModelTraining
+from hateSpeechClassification.components.model_evaluation import ModelEvaluation
 
-from hateSpeechClassification.entity.config_entity import DataIngestionConfig, DataTransformationConfig, DataValidationConfig, ModelTrainingConfig
-from hateSpeechClassification.entity.artifact_entity import DataIngestionArtifacts, DataTransformationArtifacts, DataValidationArtifacts, ModelTrainingArtifacts
+from hateSpeechClassification.entity.config_entity import DataIngestionConfig, DataTransformationConfig, DataValidationConfig, ModelTrainingConfig, ModelEvaluationConfig
+from hateSpeechClassification.entity.artifact_entity import DataIngestionArtifacts, DataTransformationArtifacts, DataValidationArtifacts, ModelTrainingArtifacts, ModelEvaluationArtifacts
 
 
 class TrainingPipeline:
@@ -15,7 +16,8 @@ class TrainingPipeline:
         self.data_ingestion_config = DataIngestionConfig()
         self.data_transformation_config = DataTransformationConfig()
         self.data_validation_config = DataValidationConfig()
-        self.model_trainer_config = ModelTrainingConfig()
+        self.model_training_config = ModelTrainingConfig()
+        self.model_evaluation_config = ModelEvaluationConfig()
 
     def start_data_ingestion(self) -> DataIngestionArtifacts:
         logging.info('Inside start_data_ingestion method of TrainingPipeline class')
@@ -69,16 +71,17 @@ class TrainingPipeline:
             raise CustomException(e, sys) from e
         
 
-    def start_model_trainer(self, data_transformation_artifacts: DataTransformationArtifacts) -> ModelTrainingArtifacts:
-        logging.info(
-            "Entered the start_model_trainer method of TrainPipeline class"
-        )
+    def start_model_training(self, data_transformation_artifacts: DataTransformationArtifacts) -> ModelTrainingArtifacts:
         try:
-            model_trainer = ModelTraining(data_transformation_artifacts=data_transformation_artifacts,
-                                        model_trainer_config=self.model_trainer_config
-                                        )
+            logging.info("Inside the start_model_trainer method of TrainPipeline class")
+
+            model_trainer = ModelTraining(
+                data_transformation_artifacts=data_transformation_artifacts,
+                model_training_config=self.model_training_config
+            )
+
             model_training_artifacts = model_trainer.initiate_model_training()
-            logging.info("Exited the start_model_trainer method of TrainPipeline class")
+            logging.info("Successfully completed start_model_trainer method of TrainPipeline class")
             
             return model_training_artifacts
 
@@ -86,9 +89,29 @@ class TrainingPipeline:
             raise CustomException(e, sys) 
 
 
-    def run_pipeline(self):
-        logging.info('Insider run_pipeline method of TrainingPipeline class')
+    def start_model_evaluation(self, model_training_artifacts: ModelTrainingArtifacts, data_transformation_artifacts: DataTransformationArtifacts) -> ModelEvaluationArtifacts:
         try:
+            logging.info("Inside the start_model_evaluation method of TrainPipeline class")
+
+            model_evaluation = ModelEvaluation(
+                model_evaluation_config = self.model_evaluation_config,
+                model_training_artifacts= model_training_artifacts,
+                data_transformation_artifacts = data_transformation_artifacts
+            )
+
+            model_evaluation_artifacts = model_evaluation.initiate_model_evaluation()
+            logging.info("Successfully completed the start_model_evaluation method of TrainPipeline class")
+
+            return model_evaluation_artifacts
+
+        except Exception as e:
+            raise CustomException(e, sys) from e
+
+
+    def run_pipeline(self):
+        try:
+            logging.info('Inside run_pipeline method of TrainingPipeline class')
+
             data_ingestion_artifacts = self.start_data_ingestion()
 
             data_validation_artifacts = self.start_data_validation(
@@ -99,9 +122,19 @@ class TrainingPipeline:
                 data_ingestion_artifacts = data_ingestion_artifacts
             )
 
-            model_trainer_artifacts = self.start_model_trainer(
+            model_training_artifacts = self.start_model_training(
                 data_transformation_artifacts=data_transformation_artifacts
             )
+
+            model_evaluation_artifacts = self.start_model_evaluation(
+                model_training_artifacts=model_training_artifacts,
+                data_transformation_artifacts=data_transformation_artifacts
+            ) 
+
+            if not model_evaluation_artifacts.is_model_accepted:
+                raise Exception("Trained model is not better than the best model")
+            
+            # model_pusher_artifacts = self.start_model_pusher()
 
             logging.info('Successfully completed run_pipeline method of TrainingPipeline class')
         except Exception as e:
