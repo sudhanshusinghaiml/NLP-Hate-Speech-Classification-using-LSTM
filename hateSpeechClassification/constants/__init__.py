@@ -77,3 +77,6 @@ MODEL_NAME = 'model.h5'
 
 APP_HOST = "0.0.0.0"
 APP_PORT = 8080
+
+# Prediction Pipeline
+PIPELINE_ARTIFACTS_DIR = os.path.join(os.getcwd(),'artifacts', 'PredictModel')
