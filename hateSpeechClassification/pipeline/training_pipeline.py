@@ -6,9 +6,10 @@ from hateSpeechClassification.components.data_transformations import DataTransfo
 from hateSpeechClassification.components.data_validator import DataValidation
 from hateSpeechClassification.components.model_trainer import ModelTraining
 from hateSpeechClassification.components.model_evaluation import ModelEvaluation
+from hateSpeechClassification.components.model_pusher import ModelPusher
 
-from hateSpeechClassification.entity.config_entity import DataIngestionConfig, DataTransformationConfig, DataValidationConfig, ModelTrainingConfig, ModelEvaluationConfig
-from hateSpeechClassification.entity.artifact_entity import DataIngestionArtifacts, DataTransformationArtifacts, DataValidationArtifacts, ModelTrainingArtifacts, ModelEvaluationArtifacts
+from hateSpeechClassification.entity.config_entity import DataIngestionConfig, DataTransformationConfig, DataValidationConfig, ModelTrainingConfig, ModelEvaluationConfig, ModelPusherConfig
+from hateSpeechClassification.entity.artifact_entity import DataIngestionArtifacts, DataTransformationArtifacts, DataValidationArtifacts, ModelTrainingArtifacts, ModelEvaluationArtifacts, ModelPusherArtifacts
 
 
 class TrainingPipeline:
@@ -18,6 +19,7 @@ class TrainingPipeline:
         self.data_validation_config = DataValidationConfig()
         self.model_training_config = ModelTrainingConfig()
         self.model_evaluation_config = ModelEvaluationConfig()
+        self.model_pusher_config = ModelPusherConfig()
 
     def start_data_ingestion(self) -> DataIngestionArtifacts:
         logging.info('Inside start_data_ingestion method of TrainingPipeline class')
@@ -108,6 +110,25 @@ class TrainingPipeline:
             raise CustomException(e, sys) from e
 
 
+    def start_model_pusher(self):
+        try:
+            logging.info("Inside the start_model_pusher method of TrainPipeline class")
+
+            model_pusher = ModelPusher(
+                model_pusher_config = self.model_pusher_config
+            )
+
+            model_pusher_artifacts = model_pusher.initiate_model_pusher()
+            logging.info("Initiated the model pusher")
+
+            logging.info("Successfully completed the start_model_pusher method of TrainPipeline class")
+
+            return model_pusher_artifacts
+
+        except Exception as e:
+            raise CustomException(e, sys) from e
+
+
     def run_pipeline(self):
         try:
             logging.info('Inside run_pipeline method of TrainingPipeline class')
@@ -134,7 +155,7 @@ class TrainingPipeline:
             if not model_evaluation_artifacts.is_model_accepted:
                 raise Exception("Trained model is not better than the best model")
             
-            # model_pusher_artifacts = self.start_model_pusher()
+            model_pusher_artifacts = self.start_model_pusher()
 
             logging.info('Successfully completed run_pipeline method of TrainingPipeline class')
         except Exception as e:
