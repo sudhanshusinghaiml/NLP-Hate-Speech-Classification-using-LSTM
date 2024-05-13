@@ -49,7 +49,7 @@ TWEET = 'tweet'
 # Model Training Constants
 MODEL_TRAINER_ARTIFACTS_DIR = 'ModelTrainerArtifacts'
 TRAINED_MODEL_DIR = 'TrainedModel'
-TRAINED_MODEL_NAME = 'lstm_model.h5'
+TRAINED_MODEL_NAME = 'model.h5'
 X_TEST_FILE_NAME = 'x_test.csv'
 Y_TEST_FILE_NAME = 'y_test.csv'
 
@@ -74,5 +74,6 @@ MODEL_EVALUATION_ARTIFACTS_DIR = 'ModelEvaluationArtifacts'
 BEST_MODEL_DIR = "BestModel"
 MODEL_EVALUATION_FILE_NAME = "loss.csv"
 MODEL_NAME = 'model.h5'
+
 APP_HOST = "0.0.0.0"
 APP_PORT = 8080

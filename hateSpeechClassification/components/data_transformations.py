@@ -12,6 +12,9 @@ from hateSpeechClassification.exception import CustomException
 from hateSpeechClassification.entity.config_entity import DataTransformationConfig
 from hateSpeechClassification.entity.artifact_entity import DataIngestionArtifacts, DataTransformationArtifacts
 
+
+
+
 class DataTransformation:
     def __init__(self, data_transformation_config: DataTransformationConfig, data_ingestion_artifacts: DataIngestionArtifacts):
         self.data_transformation_config = data_transformation_config
@@ -21,15 +24,17 @@ class DataTransformation:
     def clean_imbalanced_data(self):
         try:
             logging.info("Inside clean_imbalanced_data method from DataTransformation class")
+
             imbalance_data=pd.read_csv(self.data_ingestion_artifacts.imbalance_data_path)
+
             imbalance_data.drop(self.data_transformation_config.ID, axis=self.data_transformation_config.AXIS, inplace = self.data_transformation_config.INPLACE)
+            
             logging.info("Successfully executed clean_imbalanced_data method from DataTransformation class")
-            # logging.info(f"Returning imbalanced data {imbalance_data}")
+            
             return imbalance_data
         except Exception as e:
             raise CustomException(e, sys) from e
         
-
 
     def clean_raw_data(self):
         try:
@@ -38,7 +43,7 @@ class DataTransformation:
 
             raw_data.drop(self.data_transformation_config.COLUMNS_TO_BE_DROPPED,axis = self.data_transformation_config.AXIS, inplace = self.data_transformation_config.INPLACE)
 
-            raw_data[raw_data[self.data_transformation_config.CLASS]==0][self.data_transformation_config.CLASS]=1
+            # raw_data[raw_data[self.data_transformation_config.CLASS]==0][self.data_transformation_config.CLASS]=1
             
             # replace the value of 0 to 1
             raw_data[self.data_transformation_config.CLASS].replace({0:1},inplace=self.data_transformation_config.INPLACE)
@@ -72,8 +77,7 @@ class DataTransformation:
 
         except Exception as e:
             raise CustomException(e, sys) from e
-        
-    
+            
 
     def clean_data(self, words):
 
@@ -99,7 +103,6 @@ class DataTransformation:
         except Exception as e:
             raise CustomException(e, sys) from e
         
-
         
     def initiate_data_transformation(self) -> DataTransformationArtifacts:
         try:
@@ -126,7 +129,4 @@ class DataTransformation:
             return data_transformation_artifact
 
         except Exception as e:
-            raise CustomException(e, sys) from e
-        
-
-    
+            raise CustomException(e, sys) from e    

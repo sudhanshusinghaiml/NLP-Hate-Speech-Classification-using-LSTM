@@ -10,7 +10,6 @@ from hateSpeechClassification.constants import *
 
 
 
-
 class ModelArchitecture:
 
     def __init__(self):

@@ -73,7 +73,7 @@ class ModelTraining:
 
         try:
             logging.info("Inside initiate_model_training method of ModelTrainer class")
-            x_train, x_test, y_train, y_test = self.spliting_data(csv_path = self.data_transformation_artifacts.transformed_data_path)
+            x_train, x_test, y_train, y_test = self.data_splitting(csv_path = self.data_transformation_artifacts.transformed_data_path)
             
             model_architecture = ModelArchitecture()   
 
@@ -97,7 +97,7 @@ class ModelTraining:
             logging.info("Model training finished")
 
             with open('tokenizer.pickle', 'wb') as handle:
-                pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
+                pickle.dump(tokenizer, handle, protocol = pickle.HIGHEST_PROTOCOL)
             os.makedirs(self.model_trainer_config.TRAINED_MODEL_DIR, exist_ok=True)
             logging.info("Completed - Tokenizer saved")
 

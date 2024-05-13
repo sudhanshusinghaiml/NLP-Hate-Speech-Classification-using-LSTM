@@ -15,6 +15,7 @@ class TrainingPipeline:
         self.data_ingestion_config = DataIngestionConfig()
         self.data_transformation_config = DataTransformationConfig()
         self.data_validation_config = DataValidationConfig()
+        self.model_trainer_config = ModelTrainingConfig()
 
     def start_data_ingestion(self) -> DataIngestionArtifacts:
         logging.info('Inside start_data_ingestion method of TrainingPipeline class')
@@ -78,6 +79,7 @@ class TrainingPipeline:
                                         )
             model_training_artifacts = model_trainer.initiate_model_training()
             logging.info("Exited the start_model_trainer method of TrainPipeline class")
+            
             return model_training_artifacts
 
         except Exception as e:
