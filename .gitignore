@@ -161,3 +161,5 @@ cython_debug/
 models/tokenizer.pickle
 models/model.h5
 artifacts/*
+key-pair/hateSpeechClassificationKeyPair.pem
+hateSpeechClassificationProject.pem
