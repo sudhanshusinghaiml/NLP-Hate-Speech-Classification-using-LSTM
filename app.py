@@ -11,14 +11,14 @@ from hateSpeechClassification.pipeline.prediction_pipeline import PredictionPipe
 from hateSpeechClassification.exception import CustomException
 from hateSpeechClassification.constants import *
 
-app = FastAPI()
+HateSpeechClassificationapp = FastAPI()
 
-@app.get('/', tags=['authentication'])
+@HateSpeechClassificationapp.get('/', tags=['authentication'])
 async def index():
     return RedirectResponse(url='/docs')
 
 
-@app.get('/train')
+@HateSpeechClassificationapp.get('/train')
 async def training():
     try:
         training_pipeline = TrainingPipeline()
@@ -32,7 +32,7 @@ async def training():
     
 
 
-@app.post('/predict')
+@HateSpeechClassificationapp.post('/predict')
 async def predict_route(text):
     try:
 
@@ -44,4 +44,4 @@ async def predict_route(text):
     
 
 if __name__ == '__main__':
-    uvicorn.run(app, host = APP_HOST, port = APP_PORT)
+    uvicorn.run(HateSpeechClassificationapp, host = APP_HOST, port = APP_PORT)
